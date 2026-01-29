@@ -2,200 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Secret for You ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! ✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;800&display=swap');
 
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; overflow: hidden; font-family: 'Poppins', sans-serif; color: white; }
 
-        body {
-            background: #0f0c29;
-            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
-            color: white;
+        /* Scratch Layer */
+        #scratch-container {
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center;
+            z-index: 100; background: #000; transition: opacity 0.8s ease;
+        }
+        canvas { cursor: crosshair; touch-action: none; border-radius: 20px; box-shadow: 0 0 50px #ff0055; }
+
+        /* Message Box */
+        #msg-box {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 90%; max-width: 450px; background: white; color: #333;
+            padding: 40px; border-radius: 20px; text-align: center; z-index: 101;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #msg-box.show { transform: translate(-50%, -50%) scale(1); }
+        #msg-box h1 { font-family: 'Dancing Script', cursive; color: #ff0055; font-size: 3rem; }
+        
+        .btn {
+            margin-top: 25px; padding: 15px 40px; background: #ff0055; color: white;
+            border: none; border-radius: 50px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.4);
         }
 
-        #ui-layer {
-            position: absolute;
-            top: 20px;
-            text-align: center;
-            z-index: 10;
-            pointer-events: none;
+        /* 3D Photo World */
+        #photo-world {
+            position: fixed; inset: 0; display: none; perspective: 1000px;
+            background: radial-gradient(circle, #220011, #000);
         }
-
-        h2 { font-weight: 300; letter-spacing: 4px; margin-bottom: 10px; font-size: 1.2rem; }
-
-        .container {
-            position: relative;
-            width: 350px;
-            height: 500px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border-radius: 15px;
-            background: #fff;
-            overflow: hidden;
+        .photo {
+            position: absolute; width: 150px; height: 150px; border: 4px solid white;
+            object-fit: cover; border-radius: 10px; transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+        .photo:hover { transform: scale(1.5) !important; z-index: 500 !important; }
 
-        /* The "Underneath" Layer (Content) */
-        .content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .content img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 4px solid #f1c40f;
-        }
-
-        .content h1 {
-            font-family: 'Dancing Script', cursive;
-            color: #e74c3c;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .content p {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #555;
-        }
-
-        /* The Scratch Canvas */
-        #scratch {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 5;
-            cursor: crosshair;
-        }
-
-        .instruction {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-            text-transform: uppercase;
-        }
-
-        #music-btn {
-            position: fixed;
-            bottom: 20px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid white;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 100;
+        .birthday-banner {
+            position: absolute; top: 10%; width: 100%; text-align: center;
+            font-size: 4rem; font-weight: 800; text-transform: uppercase;
+            background: linear-gradient(to right, #ff0055, #ffdd00);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            opacity: 0; transition: 2s;
         }
     </style>
 </head>
 <body>
 
-    <div id="ui-layer">
-        <h2>SCRATCH TO REVEAL</h2>
-    </div>
+<audio id="music" loop src="song.mp3"></audio>
 
-    <div class="container">
-        <div class="content">
-            <img src="photo1.jpg" alt="Our Memory">
-            <h1>Happy Birthday!</h1>
-            <p>Dear Bachuu, I wanted to do something as special as you are. Scratching this away represents clearing out all the bad vibes to reveal the beautiful moments underneath.</p>
-            <p style="margin-top:15px; font-weight:bold; color:#2c3e50;">— Vaibhav ❤️</p>
-            <div style="display:flex; gap:5px; margin-top:15px;">
-                <img src="photo2.jpg" style="height:60px; width:50%;">
-                <img src="photo3.jpg" style="height:60px; width:50%;">
-            </div>
-        </div>
+<div id="scratch-container">
+    <canvas id="canvas"></canvas>
+    <div style="position: absolute; bottom: 20%; pointer-events: none; letter-spacing: 5px;">SCRATCH FAST! ⚡</div>
+</div>
 
-        <canvas id="scratch" width="350" height="500"></canvas>
-    </div>
+<div id="msg-box">
+    <h1>Happy Birthday!</h1>
+    <p style="margin-top:15px;">Dear Bachuu, you're the best! Now let's see some memories.</p>
+    <button class="btn" onclick="startPhotoCloud()">LET'S GO →</button>
+</div>
 
-    <p class="instruction">Use your finger/mouse to scratch</p>
+<div id="photo-world">
+    <div class="birthday-banner" id="banner">HAPPY BIRTHDAY ❤️</div>
+</div>
 
-    <button id="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
-    <audio id="bgsong" loop src="song.mp3"></audio>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const music = document.getElementById('music');
+    let scratchedPercent = 0;
+    let totalPixels;
 
-    <script>
-        const canvas = document.getElementById('scratch');
-        const ctx = canvas.getContext('2d');
-        const audio = document.getElementById('bgsong');
-        let isDrawing = false;
-        let musicStarted = false;
+    // Set up canvas size
+    canvas.width = 320;
+    canvas.height = 450;
 
-        // Fill canvas with gold foil texture
-        function init() {
-            ctx.fillStyle = '#C0C0C0'; // Silver fallback
-            const gradient = ctx.createLinearGradient(0, 0, 350, 500);
-            gradient.addColorStop(0, '#d4af37'); // Gold
-            gradient.addColorStop(0.5, '#f1c40f');
-            gradient.addColorStop(1, '#9a7b0c');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 350, 500);
+    function init() {
+        ctx.fillStyle = '#444'; // Silver base
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "bold 30px Arial";
+        ctx.fillStyle = "#222";
+        ctx.fillText("SURPRISE", 80, 230);
+        totalPixels = canvas.width * canvas.height;
+    }
+
+    function handleScratch(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 40, 0, Math.PI * 2); // Bigger radius = Faster scratch
+        ctx.fill();
+        
+        checkScratch();
+        if(!music.playing) music.play();
+    }
+
+    function checkScratch() {
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let cleared = 0;
+        for (let i = 3; i < data.length; i += 4) {
+            if (data[i] === 0) cleared++;
+        }
+        if ((cleared / totalPixels) > 0.4) { // 40% scratched
+            document.getElementById('scratch-container').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('scratch-container').style.display = 'none';
+                document.getElementById('msg-box').classList.add('show');
+            }, 800);
+        }
+    }
+
+    canvas.addEventListener('mousemove', (e) => { if(e.buttons == 1) handleScratch(e) });
+    canvas.addEventListener('touchmove', handleScratch);
+
+    // Stage 3: The 15 Photo Cloud
+    function startPhotoCloud() {
+        document.getElementById('msg-box').classList.remove('show');
+        document.getElementById('photo-world').style.display = 'block';
+        setTimeout(() => document.getElementById('banner').style.opacity = '1', 500);
+
+        // Your photo names repeated to reach 15 (photo1, photo2, photo3)
+        const photoFiles = ['photo1.jpg', 'photo2.jpg', 'photo3.jpg'];
+        
+        for (let i = 0; i < 15; i++) {
+            const img = document.createElement('img');
+            img.src = photoFiles[i % 3]; // Cycles through your 3 photos
+            img.className = 'photo';
             
-            // Add some "texture" dots
-            for(let i=0; i<500; i++) {
-                ctx.fillStyle = 'rgba(255,255,255,0.1)';
-                ctx.fillRect(Math.random()*350, Math.random()*500, 2, 2);
-            }
+            // Random Positions in 3D space
+            const x = Math.random() * 80 + 10;
+            const y = Math.random() * 80 + 10;
+            const z = Math.random() * 500 - 250;
+            const rot = Math.random() * 40 - 20;
+
+            img.style.left = x + '%';
+            img.style.top = y + '%';
+            img.style.transform = `translateZ(${z}px) rotate(${rot}deg)`;
+            img.style.zIndex = Math.floor(z + 300);
+
+            document.getElementById('photo-world').appendChild(img);
+
+            // Floating Animation
+            animatePhoto(img);
         }
+    }
 
-        function scratch(e) {
-            if (!isDrawing) return;
-            
-            // Start music on first scratch
-            if(!musicStarted) {
-                audio.play();
-                musicStarted = true;
-                document.getElementById('music-btn').textContent = "⏸ Pause Music";
-            }
+    function animatePhoto(el) {
+        let startTime = Math.random() * 100;
+        setInterval(() => {
+            startTime += 0.02;
+            const move = Math.sin(startTime) * 20;
+            el.style.marginTop = move + 'px';
+        }, 30);
+    }
 
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches[0].clientX) - rect.left;
-            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    init();
+</script>
 
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(x, y, 30, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function toggleMusic() {
-            if (audio.paused) {
-                audio.play();
-                document.getElementById('music-btn').textContent = "⏸ Pause Music";
-            } else {
-                audio.pause();
-                document.getElementById('music-btn').textContent = "🎵 Play Music";
-            }
-        }
-
-        canvas.addEventListener('mousedown', () => isDrawing = true);
-        canvas.addEventListener('touchstart', () => isDrawing = true);
-        window.addEventListener('mouseup', () => isDrawing = false);
-        window.addEventListener('touchend', () => isDrawing = false);
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('touchmove', scratch);
-
-        init();
-    </script>
 </body>
 </html>
