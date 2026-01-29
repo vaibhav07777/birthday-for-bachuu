@@ -12,6 +12,11 @@
     padding: 0;
 }
 
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: "Segoe UI", sans-serif;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -21,7 +26,7 @@ body {
 
 /* Sections */
 section {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +98,7 @@ button {
 <!-- SECTION 1: WELCOME -->
 <section>
     <div class="fade show" id="welcome">
-        <h1>It’s your special day.</h1>
+        <h1>It's your special day.</h1>
         <button onclick="startExperience()">Continue</button>
     </div>
 </section>
@@ -133,29 +138,33 @@ const music = document.getElementById("music");
 const photosSection = document.getElementById("photos");
 const messageSection = document.getElementById("message");
 const images = document.querySelectorAll(".gallery img");
+let experienceStarted = false;
 
 function startExperience() {
+    if (experienceStarted) return;
+    experienceStarted = true;
+    
     // Start music (browser safe – user interaction)
-    music.play();
+    music.play().catch(e => console.log('Music play failed:', e));
 
-    // Scroll to photos
-    photosSection.scrollIntoView({ behavior: "smooth" });
-
-    // Reveal photos container
+    // Reveal photos immediately and scroll to it
     photosSection.classList.add("show");
-
-    // Animate images one by one
     images.forEach((img, index) => {
         setTimeout(() => {
             img.classList.add("show");
         }, index * 600);
     });
 
-    // Reveal message after photos
+    // Scroll to photos first
     setTimeout(() => {
-        messageSection.scrollIntoView({ behavior: "smooth" });
+        photosSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 500);
+
+    // Then scroll to message after photos animation
+    setTimeout(() => {
+        messageSection.scrollIntoView({ behavior: "smooth", block: "start" });
         messageSection.classList.add("show");
-    }, 3000);
+    }, 4000);
 }
 </script>
 
