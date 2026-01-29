@@ -27,7 +27,7 @@ html, body {
 
 h1 {
     font-size: 2.5em;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 button {
@@ -36,15 +36,18 @@ button {
     border: none;
     border-radius: 30px;
     cursor: pointer;
+}
+
+#playBtn {
     background: #ff4081;
     color: white;
 }
 
-.next-btn {
+#nextBtn {
     margin-top: 20px;
-    display: none;
-    background: #ffffff;
+    background: white;
     color: #ff4081;
+    display: none;
 }
 </style>
 </head>
@@ -53,8 +56,11 @@ button {
 
 <div class="screen">
     <h1>🎶 Let the music speak my heart…</h1>
-    <button onclick="playMusic()">▶ Play Music</button>
-    <button class="next-btn" id="nextBtn" onclick="goNext()">🎈 Next</button>
+
+    <!-- ONLY ONE PLAY BUTTON -->
+    <button id="playBtn" onclick="playMusic()">▶ Play Music</button>
+
+    <button id="nextBtn" onclick="goNext()">🎈 Next</button>
 </div>
 
 <audio id="bgMusic" src="song.mp3" loop></audio>
@@ -63,8 +69,14 @@ button {
 function playMusic() {
     const music = document.getElementById("bgMusic");
     music.play();
+
+    // Disable & hide play button after first click
+    document.getElementById("playBtn").style.display = "none";
+
+    // Show Next button
     document.getElementById("nextBtn").style.display = "inline-block";
 }
+
 function goNext() {
     location.href = "decorate.html";
 }
