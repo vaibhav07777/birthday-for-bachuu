@@ -1,95 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Birthday Surprise for Bachuu ❤️</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
-        }
-        .screen {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0; left: 0;
-        }
-        #welcome {
-            display: flex;
-            background: #ffb3c1;
-            flex-direction: column;
-            animation: fadein 2s ease-in-out;
-        }
-        #question {
-            background: #fce4ec;
-            flex-direction: column;
-            color: #000;
-        }
-        h1 {
-            font-size: 3em;
-            margin: 20px;
-        }
-        button {
-            font-size: 1.2em;
-            padding: 12px 24px;
-            margin: 10px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .yes { background: #ff4081; color: white; }
-        .no  { background: #ccc; color: black; }
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        @keyframes fadein {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background: #000;
+    overflow: hidden;
+}
+
+/* SCENES */
+.scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.scene.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* SCENE 1 */
+#scene1 {
+    color: #fff;
+    font-size: 2.2em;
+}
+
+/* SCENE 2 */
+#scene2 {
+    background: radial-gradient(circle, #2a2a2a, #000);
+    color: #fff;
+}
+
+/* SCENE 3 */
+#scene3 {
+    background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+    flex-direction: column;
+}
+
+/* PHOTOS */
+.photos {
+    display: flex;
+    gap: 20px;
+    perspective: 1000px;
+}
+
+.photos img {
+    width: 220px;
+    border-radius: 18px;
+    transform: rotateY(15deg) translateZ(0);
+    opacity: 0;
+    transition: all 1.5s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.photos img.show {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(80px);
+}
+
+/* SCENE 4 */
+#scene4 {
+    background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+    color: #fff;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.message {
+    max-width: 800px;
+    font-size: 1.3em;
+    line-height: 1.6;
+}
+
+/* BUTTON */
+button {
+    margin-top: 30px;
+    padding: 14px 36px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+}
+</style>
 </head>
+
 <body>
 
-<div id="welcome" class="screen">
-    <div>
-        <h1>🎉 It’s Your Special Day, Bachuu! 💖</h1>
-        <p>❤️ Welcome to your birthday surprise ❤️</p>
-        <button class="yes" onclick="showQuestion()">🎁 Open Surprise</button>
+<!-- SCENE 1 -->
+<div class="scene active" id="scene1">
+    <div>It’s your day.</div>
+</div>
+
+<!-- SCENE 2 -->
+<div class="scene" id="scene2">
+    <button onclick="nextScene(3)">Continue</button>
+</div>
+
+<!-- SCENE 3 -->
+<div class="scene" id="scene3">
+    <div class="photos">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+    </div>
+    <button onclick="nextScene(4)">Continue</button>
+</div>
+
+<!-- SCENE 4 -->
+<div class="scene" id="scene4">
+    <div class="message">
+        Dear Bachuu,<br><br>
+        From the first day we met, you became a part of my life
+        in a way I never expected.<br><br>
+        This is just a small way of saying
+        how much you mean to me.<br><br>
+        Happy Birthday ❤️
     </div>
 </div>
 
-<div id="question" class="screen">
-    <div>
-        <h1>I’ve made something special for you…</h1>
-        <p>Do you want to see it?</p>
-        <button class="yes" onclick="startSurprise()">Yes 💖</button>
-        <button class="no" onclick="forceYes()">No 😜</button>
-    </div>
-</div>
+<audio id="music" src="song.mp3"></audio>
 
 <script>
-    function showQuestion() {
-        document.getElementById('welcome').style.display = 'none';
-        document.getElementById('question').style.display = 'flex';
-    }
+let current = 1;
+const music = document.getElementById("music");
 
-    function forceYes() {
-        alert("No choice 😄! Click YES to continue ❤️");
-    }
+setTimeout(() => {
+    nextScene(2);
+}, 2000);
 
-    function startSurprise() {
-        location.href = "blackroom.html";
-    }
+function nextScene(n) {
+    document.getElementById("scene" + current).classList.remove("active");
+    document.getElementById("scene" + n).classList.add("active");
+    current = n;
 
-    window.onload = function() {
-        document.getElementById('welcome').style.display = 'flex';
+    if (n === 3) {
+        music.play();
+        const imgs = document.querySelectorAll(".photos img");
+        imgs.forEach((img, i) => {
+            setTimeout(() => img.classList.add("show"), i * 600);
+        });
     }
+}
 </script>
 
 </body>
