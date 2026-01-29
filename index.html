@@ -2,362 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday! ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Secret for You ❤️</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&display=swap');
 
-        :root {
-            --primary: #ff4d6d;
-            --secondary: #ffb3c1;
-            --bg: #1a0b2e;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
 
         body {
+            background: #0f0c29;
+            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
             height: 100vh;
-            width: 100vw;
-            background: radial-gradient(circle at center, #2e1c4a 0%, #0d0417 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
-            font-family: 'Poppins', sans-serif;
             color: white;
-            perspective: 1000px;
         }
 
-        /* --- UI Elements --- */
-        .music-control {
+        #ui-layer {
             position: absolute;
             top: 20px;
-            right: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.3s;
-            font-size: 24px;
-            background: rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        h2 { font-weight: 300; letter-spacing: 4px; margin-bottom: 10px; font-size: 1.2rem; }
+
+        .container {
+            position: relative;
+            width: 350px;
+            height: 500px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 15px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        /* The "Underneath" Layer (Content) */
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 4px solid #f1c40f;
+        }
+
+        .content h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #e74c3c;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* The Scratch Canvas */
+        #scratch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            cursor: crosshair;
+        }
+
+        .instruction {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+        }
+
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid white;
+            color: white;
             padding: 8px 15px;
             border-radius: 20px;
-        }
-        .music-control:hover { opacity: 1; transform: scale(1.1); }
-
-        /* --- The Gift Box --- */
-        .gift-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
             cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-            z-index: 10;
-        }
-
-        .gift-container:hover {
-            transform: scale(1.05) rotateY(10deg);
-        }
-
-        .gift-container.opened {
-            animation: vanish 1s forwards;
-            pointer-events: none;
-        }
-
-        @keyframes vanish {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
-        .box {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary), #d6336c);
-            position: relative;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(255, 77, 109, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ribbon {
-            position: absolute;
-            width: 30px;
-            height: 100%;
-            background: var(--secondary);
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .ribbon::before {
-            content: '';
-            position: absolute;
-            width: 150px;
-            height: 30px;
-            background: var(--secondary);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .lid {
-            position: absolute;
-            top: -20px;
-            left: -10px;
-            width: 170px;
-            height: 40px;
-            background: #ff758f;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 2;
-        }
-
-        .click-text {
-            position: absolute;
-            bottom: -50px;
-            width: 100%;
-            text-align: center;
-            font-weight: 300;
-            letter-spacing: 2px;
-            animation: float 2s infinite ease-in-out;
-            text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
-        }
-
-        /* --- Hidden Content (Revealed on Open) --- */
-        .content-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Polaroids */
-        .polaroid {
-            position: absolute;
-            background: white;
-            padding: 10px 10px 35px 10px; /* More bottom padding for polaroid look */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 220px;
-            opacity: 0;
-            transform: scale(0) translate(0, 0);
-            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-        }
-        
-        .polaroid img { 
-            width: 100%; 
-            height: auto;
-            border-radius: 2px; 
-            display: block;
-        }
-        
-        /* The Letter */
-        .letter-card {
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            border-radius: 10px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(50px) scale(0.9);
-            transition: all 1s ease 1s; /* Delay 1s */
-            z-index: 20;
-            pointer-events: auto;
-            display: none; /* Hidden until JS triggers */
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .letter-card.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .letter-card h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3em;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .letter-card p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .cake-icon {
-            font-size: 50px;
-            animation: bounce 2s infinite;
-        }
-
-        /* Animations */
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-
-        /* Canvas */
-        #confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
             z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-    <div class="music-control" onclick="toggleMusic()">🎵 Play Music</div>
-
-    <canvas id="confetti"></canvas>
-
-    <div class="gift-container" id="giftBox" onclick="openGift()">
-        <div class="box">
-            <div class="ribbon"></div>
-        </div>
-        <div class="lid"></div>
-        <div class="click-text">Tap to Open</div>
+    <div id="ui-layer">
+        <h2>SCRATCH TO REVEAL</h2>
     </div>
 
-    <div class="content-layer">
-        
-        <div class="polaroid" style="--rot: -15deg; --x: -180px; --y: -50px;">
-            <img src="photo1.jpg" alt="Memory 1">
-        </div>
-        
-        <div class="polaroid" style="--rot: 10deg; --x: 180px; --y: -80px;">
-            <img src="photo2.jpg" alt="Memory 2">
-        </div>
-
-        <div class="polaroid" style="--rot: -5deg; --x: 0px; --y: 160px;">
-            <img src="photo3.jpg" alt="Memory 3">
-        </div>
-
-        <div class="letter-card" id="letter">
-            <div class="cake-icon">🎂</div>
+    <div class="container">
+        <div class="content">
+            <img src="photo1.jpg" alt="Our Memory">
             <h1>Happy Birthday!</h1>
-            <p>
-                To the most amazing person in the world. I don't need a thousand lines of code to tell you how much you mean to me.
-                <br><br>
-                Today is all about you. Shine bright, laugh loud, and eat lots of cake.
-            </p>
-            <p><strong>With love, <br>Vaibhav</strong></p>
+            <p>Dear Bachuu, I wanted to do something as special as you are. Scratching this away represents clearing out all the bad vibes to reveal the beautiful moments underneath.</p>
+            <p style="margin-top:15px; font-weight:bold; color:#2c3e50;">— Vaibhav ❤️</p>
+            <div style="display:flex; gap:5px; margin-top:15px;">
+                <img src="photo2.jpg" style="height:60px; width:50%;">
+                <img src="photo3.jpg" style="height:60px; width:50%;">
+            </div>
         </div>
 
+        <canvas id="scratch" width="350" height="500"></canvas>
     </div>
+
+    <p class="instruction">Use your finger/mouse to scratch</p>
+
+    <button id="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
+    <audio id="bgsong" loop src="song.mp3"></audio>
 
     <script>
-        const giftBox = document.getElementById('giftBox');
-        const letter = document.getElementById('letter');
-        const polaroids = document.querySelectorAll('.polaroid');
-        const music = document.getElementById('bg-music');
-        const musicBtn = document.querySelector('.music-control');
-        let musicPlaying = false;
+        const canvas = document.getElementById('scratch');
+        const ctx = canvas.getContext('2d');
+        const audio = document.getElementById('bgsong');
+        let isDrawing = false;
+        let musicStarted = false;
+
+        // Fill canvas with gold foil texture
+        function init() {
+            ctx.fillStyle = '#C0C0C0'; // Silver fallback
+            const gradient = ctx.createLinearGradient(0, 0, 350, 500);
+            gradient.addColorStop(0, '#d4af37'); // Gold
+            gradient.addColorStop(0.5, '#f1c40f');
+            gradient.addColorStop(1, '#9a7b0c');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 350, 500);
+            
+            // Add some "texture" dots
+            for(let i=0; i<500; i++) {
+                ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                ctx.fillRect(Math.random()*350, Math.random()*500, 2, 2);
+            }
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            
+            // Start music on first scratch
+            if(!musicStarted) {
+                audio.play();
+                musicStarted = true;
+                document.getElementById('music-btn').textContent = "⏸ Pause Music";
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
 
         function toggleMusic() {
-            if(musicPlaying) {
-                music.pause();
-                musicBtn.textContent = "🎵 Play Music";
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('music-btn').textContent = "⏸ Pause Music";
             } else {
-                music.play();
-                musicBtn.textContent = "⏸ Pause Music";
+                audio.pause();
+                document.getElementById('music-btn').textContent = "🎵 Play Music";
             }
-            musicPlaying = !musicPlaying;
         }
 
-        function openGift() {
-            // Play music if not already playing
-            if(!musicPlaying) toggleMusic();
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        window.addEventListener('mouseup', () => isDrawing = false);
+        window.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchmove', scratch);
 
-            // Animate Box
-            giftBox.classList.add('opened');
-
-            // Burst Confetti
-            startConfetti();
-
-            // Animate Polaroids (scattering)
-            setTimeout(() => {
-                polaroids.forEach((p, index) => {
-                    const rot = p.style.getPropertyValue('--rot');
-                    const x = p.style.getPropertyValue('--x');
-                    const y = p.style.getPropertyValue('--y');
-                    
-                    // Mobile responsive adjustment
-                    const isMobile = window.innerWidth < 768;
-                    const finalX = isMobile ? (parseInt(x)/1.5) + 'px' : x;
-                    const finalY = isMobile ? (parseInt(y)/1.5) + 'px' : y;
-
-                    p.style.opacity = '1';
-                    p.style.transform = `translate(${finalX}, ${finalY}) rotate(${rot}) scale(1)`;
-                });
-            }, 500);
-
-            // Show Letter
-            setTimeout(() => {
-                letter.classList.add('show');
-            }, 1500);
-        }
-
-        /* --- Minimal Confetti Logic --- */
-        const canvas = document.getElementById('confetti');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        let particles = [];
-        const colors = ['#ff4d6d', '#ffb3c1', '#f72585', '#4cc9f0', '#ffffff'];
-
-        function startConfetti() {
-            for(let i=0; i<150; i++) {
-                particles.push({
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight / 2,
-                    r: Math.random() * 6 + 2,
-                    dx: (Math.random() - 0.5) * 15,
-                    dy: (Math.random() - 0.5) * 15,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    life: 150
-                });
-            }
-            animateConfetti();
-        }
-
-        function animateConfetti() {
-            requestAnimationFrame(animateConfetti);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach((p, index) => {
-                p.x += p.dx;
-                p.y += p.dy;
-                p.dy += 0.1; // Gravity
-                p.r *= 0.98; // Shrink
-                p.life--;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.fill();
-
-                if(p.life <= 0) particles.splice(index, 1);
-            });
-        }
-        
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        init();
     </script>
 </body>
 </html>
