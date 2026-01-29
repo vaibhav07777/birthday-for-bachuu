@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Decoration Time 🎈</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top right, #ff9a9e, #fad0c4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #ff4081;
+    color: white;
+}
+
+/* Floating items */
+.item {
+    position: absolute;
+    bottom: -50px;
+    font-size: 2em;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-120vh); opacity: 0; }
+}
+
+#nextBtn {
+    display: none;
+    margin-top: 20px;
+    background: white;
+    color: #ff4081;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+    <h1>🎈 Let’s decorate the room! 🎊</h1>
+    <button id="decorateBtn" onclick="decorate()">🎈 Decorate</button>
+    <button id="nextBtn" onclick="goNext()">🎂 Let’s cut the cake</button>
+</div>
+
+<script>
+function decorate() {
+    document.getElementById("decorateBtn").style.display = "none";
+
+    // Create decorations
+    for (let i = 0; i < 25; i++) {
+        createItem("🎈");
+        createItem("💕");
+        createItem("🎊");
+    }
+
+    // Show next button after decoration
+    setTimeout(() => {
+        document.getElementById("nextBtn").style.display = "inline-block";
+    }, 2500);
+}
+
+function createItem(symbol) {
+    const item = document.createElement("div");
+    item.className = "item";
+    item.innerText = symbol;
+    item.style.left = Math.random() * 100 + "vw";
+    item.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    document.body.appendChild(item);
+
+    setTimeout(() => {
+        item.remove();
+    }, 6000);
+}
+
+function goNext() {
+    location.href = "cake.html";
+}
+</script>
+
+</body>
+</html>
