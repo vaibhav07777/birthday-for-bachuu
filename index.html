@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <title>Happy Birthday! ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
 
@@ -38,6 +38,9 @@
             opacity: 0.7;
             transition: 0.3s;
             font-size: 24px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
         }
         .music-control:hover { opacity: 1; transform: scale(1.1); }
 
@@ -117,6 +120,7 @@
             font-weight: 300;
             letter-spacing: 2px;
             animation: float 2s infinite ease-in-out;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
         }
 
         /* --- Hidden Content (Revealed on Open) --- */
@@ -136,16 +140,21 @@
         .polaroid {
             position: absolute;
             background: white;
-            padding: 10px 10px 30px 10px;
+            padding: 10px 10px 35px 10px; /* More bottom padding for polaroid look */
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 200px;
+            width: 220px;
             opacity: 0;
             transform: scale(0) translate(0, 0);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 5;
         }
         
-        .polaroid img { width: 100%; border-radius: 2px; }
+        .polaroid img { 
+            width: 100%; 
+            height: auto;
+            border-radius: 2px; 
+            display: block;
+        }
         
         /* The Letter */
         .letter-card {
@@ -162,6 +171,7 @@
             z-index: 20;
             pointer-events: auto;
             display: none; /* Hidden until JS triggers */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         .letter-card.show {
@@ -202,7 +212,6 @@
             pointer-events: none;
             z-index: 100;
         }
-
     </style>
 </head>
 <body>
@@ -224,20 +233,16 @@
 
     <div class="content-layer">
         
-        <div class="polaroid" style="--rot: -15deg; --x: -150px; --y: -100px;">
-            <img src="https://placehold.co/400x400/ffb3c1/white?text=Memory+1" alt="Photo 1">
+        <div class="polaroid" style="--rot: -15deg; --x: -180px; --y: -50px;">
+            <img src="photo1.jpg" alt="Memory 1">
         </div>
         
         <div class="polaroid" style="--rot: 10deg; --x: 180px; --y: -80px;">
-            <img src="https://placehold.co/400x400/ff4d6d/white?text=Memory+2" alt="Photo 2">
+            <img src="photo2.jpg" alt="Memory 2">
         </div>
 
-        <div class="polaroid" style="--rot: -5deg; --x: -200px; --y: 150px;">
-            <img src="https://placehold.co/400x400/333/white?text=Memory+3" alt="Photo 3">
-        </div>
-        
-        <div class="polaroid" style="--rot: 12deg; --x: 160px; --y: 120px;">
-            <img src="https://placehold.co/400x400/2e1c4a/white?text=Memory+4" alt="Photo 4">
+        <div class="polaroid" style="--rot: -5deg; --x: 0px; --y: 160px;">
+            <img src="photo3.jpg" alt="Memory 3">
         </div>
 
         <div class="letter-card" id="letter">
@@ -291,8 +296,8 @@
                     
                     // Mobile responsive adjustment
                     const isMobile = window.innerWidth < 768;
-                    const finalX = isMobile ? (parseInt(x)/2) + 'px' : x;
-                    const finalY = isMobile ? (parseInt(y)/2) + 'px' : y;
+                    const finalX = isMobile ? (parseInt(x)/1.5) + 'px' : x;
+                    const finalY = isMobile ? (parseInt(y)/1.5) + 'px' : y;
 
                     p.style.opacity = '1';
                     p.style.transform = `translate(${finalX}, ${finalY}) rotate(${rot}) scale(1)`;
@@ -305,7 +310,7 @@
             }, 1500);
         }
 
-        /* --- Minimal Confetti Logic (No external lib needed) --- */
+        /* --- Minimal Confetti Logic --- */
         const canvas = document.getElementById('confetti');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
