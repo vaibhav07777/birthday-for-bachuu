@@ -6,16 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: "Segoe UI", sans-serif;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #fff;
-    min-height: 100vh;
-    overflow-x: hidden;
+    color: #ffffff;
+    scroll-behavior: smooth;
 }
 
+/* Sections */
 section {
     min-height: 100vh;
     display: flex;
@@ -25,10 +29,11 @@ section {
     padding: 40px 20px;
 }
 
+/* Fade animation */
 .fade {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 1.5s ease;
+    transform: translateY(25px);
+    transition: all 1.6s ease;
 }
 
 .fade.show {
@@ -36,21 +41,22 @@ section {
     transform: translateY(0);
 }
 
+/* Button */
 button {
     margin-top: 30px;
-    padding: 14px 34px;
+    padding: 14px 36px;
     font-size: 1.1em;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    background: #fff;
-    color: #000;
+    background: #ffffff;
+    color: #000000;
 }
 
 /* Gallery */
 .gallery {
     display: flex;
-    gap: 20px;
+    gap: 22px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -58,10 +64,10 @@ button {
 .gallery img {
     width: 220px;
     border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.45);
     opacity: 0;
     transform: scale(0.9);
-    transition: all 1.5s ease;
+    transition: all 1.4s ease;
 }
 
 .gallery img.show {
@@ -69,14 +75,14 @@ button {
     transform: scale(1);
 }
 
-/* Message */
+/* Message box */
 .message {
-    max-width: 800px;
+    max-width: 820px;
     font-size: 1.3em;
     line-height: 1.6;
-    background: rgba(255,255,255,0.1);
-    padding: 30px;
-    border-radius: 20px;
+    background: rgba(255,255,255,0.12);
+    padding: 32px;
+    border-radius: 22px;
     backdrop-filter: blur(10px);
 }
 </style>
@@ -84,26 +90,26 @@ button {
 
 <body>
 
-<!-- SECTION 1 -->
+<!-- SECTION 1: WELCOME -->
 <section>
-    <div class="fade show">
+    <div class="fade show" id="welcome">
         <h1>It’s your special day.</h1>
-        <button onclick="start()">Continue</button>
+        <button onclick="startExperience()">Continue</button>
     </div>
 </section>
 
-<!-- SECTION 2 -->
+<!-- SECTION 2: PHOTOS -->
 <section>
     <div id="photos" class="fade">
         <div class="gallery">
-            <img src="photo1.jpg">
-            <img src="photo2.jpg">
-            <img src="photo3.jpg">
+            <img src="photo1.jpg" alt="">
+            <img src="photo2.jpg" alt="">
+            <img src="photo3.jpg" alt="">
         </div>
     </div>
 </section>
 
-<!-- SECTION 3 -->
+<!-- SECTION 3: MESSAGE -->
 <section>
     <div id="message" class="fade message">
         Dear Bachuu,<br><br>
@@ -119,23 +125,37 @@ button {
     </div>
 </section>
 
+<!-- MUSIC -->
 <audio id="music" src="song.mp3"></audio>
 
 <script>
 const music = document.getElementById("music");
+const photosSection = document.getElementById("photos");
+const messageSection = document.getElementById("message");
+const images = document.querySelectorAll(".gallery img");
 
-function start() {
+function startExperience() {
+    // Start music (browser safe – user interaction)
     music.play();
-    document.getElementById("photos").classList.add("show");
 
-    const imgs = document.querySelectorAll(".gallery img");
-    imgs.forEach((img, i) => {
-        setTimeout(() => img.classList.add("show"), i * 600);
+    // Scroll to photos
+    photosSection.scrollIntoView({ behavior: "smooth" });
+
+    // Reveal photos container
+    photosSection.classList.add("show");
+
+    // Animate images one by one
+    images.forEach((img, index) => {
+        setTimeout(() => {
+            img.classList.add("show");
+        }, index * 600);
     });
 
+    // Reveal message after photos
     setTimeout(() => {
-        document.getElementById("message").classList.add("show");
-    }, 2500);
+        messageSection.scrollIntoView({ behavior: "smooth" });
+        messageSection.classList.add("show");
+    }, 3000);
 }
 </script>
 
