@@ -2,62 +2,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Happy Birthday Bachuu ❤️</title>
+    <title>Birthday Surprise for Bachuu ❤️</title>
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+            overflow: hidden;
+        }
+        .screen {
+            display: none;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            color: #fff;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+        #welcome {
+            display: flex;
+            background: #ffb3c1;
+            flex-direction: column;
+            animation: fadein 2s ease-in-out;
+        }
+        #question {
+            background: #fce4ec;
+            flex-direction: column;
+            color: #000;
         }
         h1 {
             font-size: 3em;
-            margin-top: 40px;
+            margin: 20px;
         }
-        p {
-            font-size: 1.3em;
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
+        button {
+            font-size: 1.2em;
+            padding: 12px 24px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
         }
-        img {
-            width: 250px;
-            border-radius: 20px;
-            margin: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .gallery {
-            margin-top: 30px;
-        }
-        footer {
-            margin: 40px;
-            font-size: 1em;
+        .yes { background: #ff4081; color: white; }
+        .no  { background: #ccc; color: black; }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <h1>🎉 Happy Birthday My Love ❤️ 🎉</h1>
-
-    <p>
-        Dear Bachuu,<br><br>
-        From the day we met on 16th August 2023 to the moment you said YES on 20th May 2024,
-        my life changed forever.  
-        You are my dream, my strength, and my forever.  
-        On your special day, I just want to say — I love you more than words can ever express. 💖
-    </p>
-
-    <div class="gallery">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
+<div id="welcome" class="screen">
+    <div>
+        <h1>🎉 It’s Your Special Day, Bachuu! 💖</h1>
+        <p>❤️ Welcome to your birthday surprise ❤️</p>
+        <button class="yes" onclick="showQuestion()">🎁 Open Surprise</button>
     </div>
+</div>
 
-    <footer>
-        Forever yours,<br>
-        — Vaibhav 💌
-    </footer>
+<div id="question" class="screen">
+    <div>
+        <h1>I’ve made something special for you…</h1>
+        <p>Do you want to see it?</p>
+        <button class="yes" onclick="startSurprise()">Yes 💖</button>
+        <button class="no" onclick="forceYes()">No 😜</button>
+    </div>
+</div>
+
+<script>
+    function showQuestion() {
+        document.getElementById('welcome').style.display = 'none';
+        document.getElementById('question').style.display = 'flex';
+    }
+
+    function forceYes() {
+        alert("No choice 😄! Click YES to continue ❤️");
+    }
+
+    function startSurprise() {
+        location.href = "blackroom.html";
+    }
+
+    window.onload = function() {
+        document.getElementById('welcome').style.display = 'flex';
+    }
+</script>
 
 </body>
 </html>
