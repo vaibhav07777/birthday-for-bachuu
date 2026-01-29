@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cake Time 🎂</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to top, #ff9a9e, #fad0c4);
+    overflow: hidden;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#cake {
+    font-size: 8em;
+    cursor: pointer;
+}
+
+#flame {
+    font-size: 3em;
+    margin-bottom: -20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 14px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #ff4081;
+    cursor: pointer;
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+    <h1 id="text">🕯️ Make a wish & blow the candle</h1>
+
+    <div id="flame">🔥</div>
+    <div id="cake" onclick="blowCandle()">🎂</div>
+
+    <button id="cutBtn" onclick="cutCake()">🍰 Cut the Cake</button>
+</div>
+
+<script>
+function blowCandle() {
+    document.getElementById("flame").innerText = "💨";
+    document.getElementById("text").innerText = "Your wish is on its way 💖";
+    document.getElementById("cutBtn").style.display = "inline-block";
+}
+
+function cutCake() {
+    document.getElementById("cake").innerText = "🍰";
+    document.getElementById("text").innerText = "Happy Birthday Bachuu 🎉";
+
+    setTimeout(() => {
+        location.href = "final.html";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
