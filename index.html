@@ -1,329 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Happy Birthday ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    <style>
+        :root {
+            --primary: #ff7eb3;
+            --secondary: #ff758c;
+            --bg: #1a1a2e;
+            --card-bg: #fff;
+        }
 
-html, body {
-    height: 100%;
-    overflow-x: hidden;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #ffffff;
-    scroll-behavior: smooth;
-    position: relative;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: #fff;
+            height: 100vh;
+            overflow: hidden; /* No scrolling, app-like feel */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
-/* Particles/Confetti Background */
-.particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
+        /* SCREEN 1: THE GIFT BOX */
+        #gift-screen {
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #2e2e42 0%, #1a1a2e 100%);
+            width: 100%;
+            height: 100%;
+            transition: opacity 1s ease;
+        }
 
-.particle {
-    position: absolute;
-    background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff);
-    border-radius: 50%;
-    animation: float 6s ease-in-out infinite;
-}
+        .gift-box {
+            font-size: 100px;
+            cursor: pointer;
+            animation: shake 2s infinite;
+            position: relative;
+            z-index: 2;
+        }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
-    50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
-}
+        .gift-box::after {
+            content: 'Click to Open';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            white-space: nowrap;
+            font-family: 'Poppins', sans-serif;
+        }
 
-/* Parallax Background */
-.parallax {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ff9a9e"/><stop offset="100%" stop-color="%23fecfef"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23a)"><animate attributeName="cy" values="20;80;20" dur="3s" repeatCount="indefinite"/></circle></svg>') repeat;
-    animation: parallax 20s linear infinite;
-    z-index: 0;
-}
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0eg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
 
-@keyframes parallax {
-    0% { background-position: 0 0; }
-    100% { background-position: 100px 100px; }
-}
+        /* SCREEN 2: THE CONTENT */
+        #main-content {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2b1055, #7597de);
+            position: relative;
+        }
 
-/* Sections */
-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 2;
-}
+        /* POLAROID STACK */
+        .card-stack {
+            position: relative;
+            width: 300px;
+            height: 400px;
+        }
 
-/* Fade + Slide Animation */
-.fade {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 1.8s ease;
-}
+        .card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            padding: 15px;
+            padding-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            transform-origin: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.fade.show {
-    opacity: 1;
-    transform: translateY(0);
-}
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            pointer-events: none;
+        }
 
-/* Enhanced Button */
-button {
-    margin-top: 30px;
-    padding: 14px 36px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
-    color: #000;
-    box-shadow: 0 10px 30px rgba(255,107,107,0.4);
-    transition: all 0.3s ease;
-}
+        .card p {
+            color: #333;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            margin-top: 15px;
+            text-align: center;
+        }
 
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 40px rgba(255,107,107,0.6);
-}
+        /* The Letter Card */
+        .card.letter {
+            background: #fff1f2;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+        }
 
-/* Supercharged Gallery */
-.gallery {
-    display: flex;
-    gap: 22px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+        .letter-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #444;
+        }
 
-.gallery img {
-    width: 220px;
-    border-radius: 18px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.45);
-    opacity: 0;
-    transform: scale(0.8) rotate(-5deg);
-    transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    filter: saturate(0.8);
-}
+        .letter-text h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #d63384;
+            margin-bottom: 10px;
+        }
 
-.gallery img.show {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    filter: saturate(1);
-}
+        /* Floating particles for bg */
+        .bg-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 10s infinite linear;
+        }
 
-.gallery img:nth-child(1) { transition-delay: 0.2s; }
-.gallery img:nth-child(2) { transition-delay: 0.4s; }
-.gallery img:nth-child(3) { transition-delay: 0.6s; }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
 
-.gallery img:hover {
-    transform: scale(1.1) !important;
-    box-shadow: 0 30px 60px rgba(255,107,107,0.6);
-    filter: saturate(1.2) brightness(1.1);
-}
-
-/* Typing Message */
-.message {
-    max-width: 820px;
-    font-size: 1.3em;
-    line-height: 1.6;
-    background: rgba(255,255,255,0.12);
-    padding: 32px;
-    border-radius: 22px;
-    backdrop-filter: blur(10px);
-}
-
-.typing {
-    border-right: 3px solid #ffd93d;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent; }
-    50% { border-color: #ffd93d; }
-}
-
-/* Fireworks */
-.fireworks {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.firework {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #ffd93d;
-    border-radius: 50%;
-    animation: explode 1s ease-out forwards;
-}
-
-@keyframes explode {
-    0% {
-        opacity: 1;
-        transform: scale(0);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1) translate(var(--dx), var(--dy));
-    }
-}
-</style>
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .card-stack { width: 85vw; height: 60vh; }
+            .gift-box { font-size: 80px; }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="parallax"></div>
-    <div class="particles" id="particles"></div>
-    <div class="fireworks" id="fireworks"></div>
 
-<!-- SECTION 1: WELCOME -->
-<section>
-    <div class="fade show" id="welcome">
-        <h1>It's your special day. ✨</h1>
-        <button onclick="startExperience()">Continue →</button>
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mp3">
+    </audio>
+
+    <div id="gift-screen" onclick="openGift()">
+        <div class="gift-box">🎁</div>
     </div>
-</section>
 
-<!-- SECTION 2: PHOTOS -->
-<section>
-    <div id="photos" class="fade">
-        <div class="gallery">
-            <img src="photo1.jpg" alt="Memory 1">
-            <img src="photo2.jpg" alt="Memory 2">
-            <img src="photo3.jpg" alt="Memory 3">
-        </div>
-    </div>
-</section>
-
-<!-- SECTION 3: MESSAGE -->
-<section>
-    <div id="message" class="fade message">
-        <div>Dear Bachuu,</div>
-        <div class="typing" id="typingText">
-            I don’t need big words or big gestures today. I just want you to know that you matter to me — more than you probably realize. I hope this small thing brings a smile to you, just like you bring one to me. Happy Birthday ❤️ — Vaibhav
-        </div>
-    </div>
-</section>
-
-<!-- MUSIC -->
-<audio id="music" loop src="song.mp3"></audio>
-
-<script>
-const music = document.getElementById("music");
-const particlesEl = document.getElementById("particles");
-const fireworksEl = document.getElementById("fireworks");
-const photosSection = document.getElementById("photos");
-const messageSection = document.getElementById("message");
-const typingText = document.getElementById("typingText");
-const images = document.querySelectorAll(".gallery img");
-let experienceStarted = false;
-
-// Create floating particles
-function createParticles() {
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        particle.style.width = particle.style.height = (Math.random() * 6 + 2) + 'px';
-        particlesEl.appendChild(particle);
-    }
-}
-
-// Fireworks explosion
-function launchFirework(x, y) {
-    for (let i = 0; i < 20; i++) {
-        const firework = document.createElement('div');
-        firework.className = 'firework';
-        firework.style.left = x + 'px';
-        firework.style.top = y + 'px';
-        const angle = (i / 20) * Math.PI * 2;
-        const dist = 200 + Math.random() * 100;
-        firework.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-        firework.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-        fireworksEl.appendChild(firework);
-        setTimeout(() => firework.remove(), 1000);
-    }
-}
-
-// Start experience
-function startExperience() {
-    if (experienceStarted) return;
-    experienceStarted = true;
-    
-    music.play().catch(e => console.log('Music play failed:', e));
-    createParticles();
-
-    // Animate photos
-    photosSection.classList.add("show");
-    images.forEach((img, index) => {
-        setTimeout(() => img.classList.add("show"), index * 400);
-    });
-
-    setTimeout(() => {
-        photosSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 500);
-
-    setTimeout(() => {
-        messageSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        messageSection.classList.add("show");
-        // Typing effect
-        typingText.style.width = '0';
-        typingText.classList.add('typing');
-        // Fireworks on message
-        setTimeout(() => {
-            launchFirework(window.innerWidth / 2, window.innerHeight / 2);
-            setInterval(() => {
-                launchFirework(Math.random() * window.innerWidth, Math.random() * window.innerHeight / 2);
-            }, 2000);
-        }, 1000);
-    }, 3500);
-}
-
-// Intersection Observer for extra reveals on scroll-back
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('show');
-    });
-}, { threshold: 0.1 });
-
-observer.observe(photosSection);
-observer.observe(messageSection);
-</script>
-
-</body>
-</html>
+    <div id="main-content">
+        <div class="bg-circles" id="circles"></div>
+        
+        <div class="card-stack">
+            <div class="card" style="transform: rotate(-5deg); z-index:
