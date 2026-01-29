@@ -6,91 +6,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    font-family: 'Segoe UI', sans-serif;
-    background: #000;
-    overflow: hidden;
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* SCENES */
-.scene {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+section {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 40px 20px;
+}
+
+.fade {
     opacity: 0;
-    transition: opacity 1.5s ease;
-}
-
-.scene.active {
-    opacity: 1;
-    z-index: 1;
-}
-
-/* SCENE 1 */
-#scene1 {
-    color: #fff;
-    font-size: 2.2em;
-}
-
-/* SCENE 2 */
-#scene2 {
-    background: radial-gradient(circle, #2a2a2a, #000);
-    color: #fff;
-}
-
-/* SCENE 3 */
-#scene3 {
-    background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
-    flex-direction: column;
-}
-
-/* PHOTOS */
-.photos {
-    display: flex;
-    gap: 20px;
-    perspective: 1000px;
-}
-
-.photos img {
-    width: 220px;
-    border-radius: 18px;
-    transform: rotateY(15deg) translateZ(0);
-    opacity: 0;
+    transform: translateY(20px);
     transition: all 1.5s ease;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
-.photos img.show {
+.fade.show {
     opacity: 1;
-    transform: rotateY(0deg) translateZ(80px);
+    transform: translateY(0);
 }
 
-/* SCENE 4 */
-#scene4 {
-    background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
-    color: #fff;
-    flex-direction: column;
-    padding: 30px;
-}
-
-.message {
-    max-width: 800px;
-    font-size: 1.3em;
-    line-height: 1.6;
-}
-
-/* BUTTON */
 button {
     margin-top: 30px;
-    padding: 14px 36px;
+    padding: 14px 34px;
     font-size: 1.1em;
     border: none;
     border-radius: 30px;
@@ -98,65 +46,96 @@ button {
     background: #fff;
     color: #000;
 }
+
+/* Gallery */
+.gallery {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gallery img {
+    width: 220px;
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1.5s ease;
+}
+
+.gallery img.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Message */
+.message {
+    max-width: 800px;
+    font-size: 1.3em;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
 </style>
 </head>
 
 <body>
 
-<!-- SCENE 1 -->
-<div class="scene active" id="scene1">
-    <div>It’s your day.</div>
-</div>
-
-<!-- SCENE 2 -->
-<div class="scene" id="scene2">
-    <button onclick="nextScene(3)">Continue</button>
-</div>
-
-<!-- SCENE 3 -->
-<div class="scene" id="scene3">
-    <div class="photos">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
+<!-- SECTION 1 -->
+<section>
+    <div class="fade show">
+        <h1>It’s your special day.</h1>
+        <button onclick="start()">Continue</button>
     </div>
-    <button onclick="nextScene(4)">Continue</button>
-</div>
+</section>
 
-<!-- SCENE 4 -->
-<div class="scene" id="scene4">
-    <div class="message">
+<!-- SECTION 2 -->
+<section>
+    <div id="photos" class="fade">
+        <div class="gallery">
+            <img src="photo1.jpg">
+            <img src="photo2.jpg">
+            <img src="photo3.jpg">
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3 -->
+<section>
+    <div id="message" class="fade message">
         Dear Bachuu,<br><br>
-        From the first day we met, you became a part of my life
-        in a way I never expected.<br><br>
-        This is just a small way of saying
-        how much you mean to me.<br><br>
-        Happy Birthday ❤️
+        I don’t need big words or big gestures today.<br>
+        I just want you to know that you matter to me —
+        more than you probably realize.<br><br>
+
+        I hope this small thing brings a smile to you,
+        just like you bring one to me.<br><br>
+
+        Happy Birthday ❤️<br>
+        — Vaibhav
     </div>
-</div>
+</section>
 
 <audio id="music" src="song.mp3"></audio>
 
 <script>
-let current = 1;
 const music = document.getElementById("music");
 
-setTimeout(() => {
-    nextScene(2);
-}, 2000);
+function start() {
+    music.play();
+    document.getElementById("photos").classList.add("show");
 
-function nextScene(n) {
-    document.getElementById("scene" + current).classList.remove("active");
-    document.getElementById("scene" + n).classList.add("active");
-    current = n;
+    const imgs = document.querySelectorAll(".gallery img");
+    imgs.forEach((img, i) => {
+        setTimeout(() => img.classList.add("show"), i * 600);
+    });
 
-    if (n === 3) {
-        music.play();
-        const imgs = document.querySelectorAll(".photos img");
-        imgs.forEach((img, i) => {
-            setTimeout(() => img.classList.add("show"), i * 600);
-        });
-    }
+    setTimeout(() => {
+        document.getElementById("message").classList.add("show");
+    }, 2500);
 }
 </script>
 
