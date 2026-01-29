@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Music Time 🎵</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #ff4081;
+    color: white;
+}
+
+.next-btn {
+    margin-top: 20px;
+    display: none;
+    background: #ffffff;
+    color: #ff4081;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+    <h1>🎶 Let the music speak my heart…</h1>
+    <button onclick="playMusic()">▶ Play Music</button>
+    <button class="next-btn" id="nextBtn" onclick="goNext()">🎈 Next</button>
+</div>
+
+<audio id="bgMusic" src="song.mp3" loop></audio>
+
+<script>
+function playMusic() {
+    const music = document.getElementById("bgMusic");
+    music.play();
+    document.getElementById("nextBtn").style.display = "inline-block";
+}
+function goNext() {
+    location.href = "decorate.html";
+}
+</script>
+
+</body>
+</html>
